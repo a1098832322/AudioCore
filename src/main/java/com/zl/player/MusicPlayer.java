@@ -1,7 +1,10 @@
 package com.zl.player;
 
+import com.sun.media.jfxmedia.events.PlayerTimeListener;
 import com.tulskiy.musique.audio.AudioFileReader;
 import com.tulskiy.musique.audio.player.Player;
+import com.tulskiy.musique.audio.player.PlayerEvent;
+import com.tulskiy.musique.audio.player.PlayerListener;
 import com.tulskiy.musique.model.Track;
 import com.tulskiy.musique.system.TrackIO;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +23,15 @@ public class MusicPlayer {
      */
     private static class PlayerHolder {
         private static final Player PLAYER = new Player();
+    }
+
+    /**
+     * 获取真实的player本体
+     *
+     * @return player本体
+     */
+    public Player getCurrentPlayer() {
+        return PlayerHolder.PLAYER;
     }
 
     /**
@@ -57,6 +69,15 @@ public class MusicPlayer {
     }
 
     /**
+     * 添加事件监听器
+     *
+     * @param listener 监听器
+     */
+    public void addListener(PlayerListener listener) {
+        PlayerHolder.PLAYER.addListener(listener);
+    }
+
+    /**
      * 判断是否已生成示例
      *
      * @return true/false
@@ -66,51 +87,12 @@ public class MusicPlayer {
     }
 
     /**
-     * 根据音乐id加载歌曲
+     * 是否正在播放
      *
-     * @param musicId 音乐id
-     * @return 加载成功/失败
+     * @return true/false
      */
-    public boolean loadMusic(String musicId) {
-//        HttpClient.getMusicPlayUrl(musicId, result -> {
-//            System.out.println(result);
-//            //尝试下载
-//            HttpClient.download(result.getUrl()
-//                    , "C:/temp/" + result.getMd5() + "." + result.getType()
-//                    //, result.getUrl()
-//                    , new DownloadListener() {
-//                        @Override
-//                        public void start(long max) {
-//
-//                        }
-//
-//                        @Override
-//                        public void loading(int progress) {
-//
-//                        }
-//
-//                        @Override
-//                        public void complete(String path) {
-//                            //加载音乐
-//                            loadFlag = loadMusicSrc(path);
-//                            //打开音乐
-//                            openMusic();
-//                        }
-//
-//                        @Override
-//                        public void fail(int code, String message) {
-//
-//                        }
-//
-//                        @Override
-//                        public void loadFail(String message) {
-//
-//                        }
-//                    }, 0L);
-//            return result;
-//        });
-
-        return loadFlag;
+    private boolean isPlaying() {
+        return player.isPlaying();
     }
 
     /**
