@@ -1,6 +1,7 @@
 package com.zl.util;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
  * 文件工具
@@ -26,5 +27,23 @@ public class FileUtil {
      */
     public static boolean judeDirExists(File file) {
         return file.exists() ? file.isDirectory() : file.mkdirs();
+    }
+
+    /**
+     * 清除指定目录下的m4a缓存文件
+     *
+     * @param cacheFileDirPath 目录路径
+     */
+    public static void cleanM4aCache(String cacheFileDirPath) {
+        File dir = new File(cacheFileDirPath);
+        if (dir.isDirectory()) {
+            //如果是文件夹
+            for (File file : Objects.requireNonNull(dir.listFiles())) {
+                if (file.isFile() && file.getName().endsWith("m4a")) {
+                    //清理M4A文件
+                    file.delete();
+                }
+            }
+        }
     }
 }
