@@ -16,7 +16,7 @@ public class Url {
      * 基础搜索URL
      */
     public static final String BASE_SEARCH_URI
-            = "/revision/search/main?core=album&kw=%E9%83%AD%E5%BE%B7%E7%BA%B2&spellchecker=true&rows=20&condition=relation&device=iPhone";
+            = "/revision/search/main?core=album&spellchecker=true&rows=20&condition=relation&device=iPhone";
 
     /**
      * 根据专辑id查询专辑详情(需要拼接专辑id)

@@ -9,6 +9,8 @@ import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,18 +32,24 @@ public class HttpClient {
     /**
      * 搜索播放列表
      *
-     * @param page 查询页码
+     * @param keyword 关键词
+     * @param page    查询页码
      * @return 播放列表实体
      * @throws InterruptedException 线程问题抛出的异常
      */
-    public static List<AlbumModel> doSearch(final Integer page) throws InterruptedException {
+    public static List<AlbumModel> doSearch(String keyword, final Integer page) throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         List<AlbumModel> resultList = new CopyOnWriteArrayList<>();
 
         Thread task = new Thread(() -> {
-            Request request = new Request.Builder().url(Url.BASE_URL + Url.BASE_SEARCH_URI + "&page=" + page).get().build();
             Response response = null;
             try {
+                Request request = new Request.Builder()
+                        .url(Url.BASE_URL + Url.BASE_SEARCH_URI
+                                //根据关键词搜索，默认关键词为“郭德纲”
+                                + "&kw=" + (StringUtils.isBlank(keyword) ? "%E9%83%AD%E5%BE%B7%E7%BA%B2" : URLEncoder.encode(keyword, "utf-8"))
+                                + "&page=" + page)
+                        .get().build();
                 response = client.newCall(request).execute();
             } catch (IOException e) {
                 e.printStackTrace();
